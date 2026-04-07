@@ -19,4 +19,8 @@ public class HelloController {
     public String form(){
         return "registration form";
     }
+
+    public  String another(){
+        return "hellow my people";
+    }
 }
