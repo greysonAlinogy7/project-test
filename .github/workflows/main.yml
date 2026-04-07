@@ -20,31 +20,6 @@ jobs:
           java-version: '21'
           cache: 'maven'                  # Speeds up repeated builds
 
-      - name: Build with Maven (run tests)
-        run: mvn clean package -B --no-transfer-progress
+      - name: Build with Maven
+        run: mvn clean package
 
-      # Docker Setup
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      # === LOGIN TO DOCKER HUB ===
-      - name: Login to Docker Hub
-        uses: docker/login-action@v4          # Updated to latest v4
-        with:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_ACCESS_TOKEN }}
-
-      # === BUILD & PUSH ===
-      - name: Build and Push Docker Image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: alinogy7/cicd-project:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          provenance: false
