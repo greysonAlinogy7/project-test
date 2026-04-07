@@ -15,4 +15,8 @@ public class HelloController {
     public  String hell(){
         return "this is another one";
     }
+
+    public String form(){
+        return "registration form";
+    }
 }
