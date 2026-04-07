@@ -1,4 +1,4 @@
-name: Build & Deploy Spring app
+name: Build & Deploy Spring Boot App
 
 on:
   push:
@@ -11,36 +11,40 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup JDK 21
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'corretto'
           java-version: '21'
+          cache: 'maven'                  # Speeds up repeated builds
 
-      - name: Build (with tests)
-        run: mvn clean package
+      - name: Build with Maven (run tests)
+        run: mvn clean package -B --no-transfer-progress
 
-        # Setup Docker Buildx
+      # Docker Setup
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      # Login to Docker Hub
+      # === LOGIN TO DOCKER HUB ===
       - name: Login to Docker Hub
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4          # Updated to latest v4
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_ACCESS_TOKEN }}
 
-      # Build and Push
+      # === BUILD & PUSH ===
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v5
         with:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/cicd-project:latest
+          tags: alinogy7/cicd-project:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
           provenance: false
