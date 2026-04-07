@@ -10,4 +10,9 @@ public class HelloController {
     public String hello(){
         return "hello controller cicd";
     }
+
+    @RequestMapping("/another")
+    public  String hell(){
+        return "this is another one";
+    }
 }
