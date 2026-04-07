@@ -41,6 +41,3 @@ jobs:
           tags: |
             alinogy7/${{ github.event.repository.name }}:latest
             alinogy7/${{ github.event.repository.name }}:${{ github.sha }}
-          # Optional: cache for faster builds
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
