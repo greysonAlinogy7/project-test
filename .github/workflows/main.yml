@@ -40,3 +40,5 @@ jobs:
           tags: |
             alinogy7/${{ github.event.repository.name }}:latest
             alinogy7/${{ github.event.repository.name }}:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
